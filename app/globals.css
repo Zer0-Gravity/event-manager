@@ -24,3 +24,7 @@ body {
     color: var(--foreground);
     font-family: Arial, Helvetica, sans-serif;
 }
+
+.custom-input-field {
+    @apply border border-[#222222] p-2 rounded-lg outline-none h-12;
+}

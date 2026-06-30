@@ -32,7 +32,7 @@ export default function DropdownAccount() {
                         <>
                             <DropdownMenuItem className="outline-none">
                                 <Link
-                                    href={"/sign-in"}
+                                    href={"/auth/sign-in"}
                                     className="flex gap-5 p-2 hover:bg-gray-200 rounded-lg transition-colors"
                                 >
                                     <LogIn size={18} />
@@ -44,7 +44,7 @@ export default function DropdownAccount() {
 
                             <DropdownMenuItem className="outline-none">
                                 <Link
-                                    href={"/sign-up"}
+                                    href={"/auth/sign-up"}
                                     className="flex gap-5 p-2 hover:bg-gray-200 rounded-lg transition-colors"
                                 >
                                     <UserPlus2 size={18} />
