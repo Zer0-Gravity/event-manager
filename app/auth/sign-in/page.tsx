@@ -1,24 +1,41 @@
 "use client";
 
 import ErrorMassage from "@/src/component/utils/ErrorMessage";
+import { signIn } from "@/src/lib/auth-client";
 import {
     PasswordToggleField,
     PasswordToggleFieldIcon,
     PasswordToggleFieldInput,
     PasswordToggleFieldToggle,
 } from "@radix-ui/react-password-toggle-field";
-import { Eye, EyeClosed, EyeIcon, EyeOff } from "lucide-react";
+import { EyeIcon, EyeOff, LoaderCircle } from "lucide-react";
 import Link from "next/link";
+import { useState } from "react";
 import { useForm } from "react-hook-form";
 
 export default function Page() {
+    const [loading, setLoading] = useState<boolean>(false);
+
     const {
         register,
         handleSubmit,
         formState: { errors },
     } = useForm();
 
-    const handleLogin = async () => {};
+    //Login function
+    const handleLogin = async (data: any) => {
+        try {
+            setLoading(true);
+            await signIn.email(
+                { ...data, callbackURL: "/dashboard" },
+                { onError: (ctx) => alert(ctx.error.message) },
+            );
+        } catch (error) {
+            console.log(error);
+        } finally {
+            setLoading(false);
+        }
+    };
     return (
         <main className="flex items-center justify-center w-full">
             <div className="w-full h-full sm:w-120 flex flex-col p-5 space-y-10">
@@ -30,6 +47,7 @@ export default function Page() {
                     className=" space-y-5"
                     onSubmit={handleSubmit(handleLogin)}
                 >
+                    {/* Email field */}
                     <div className="flex flex-col gap-3">
                         <label htmlFor="email" className="text-sm">
                             Email
@@ -42,6 +60,7 @@ export default function Page() {
                         {errors.email && <ErrorMassage />}
                     </div>
 
+                    {/* Password field */}
                     <div className="flex flex-col gap-3">
                         <label htmlFor="password" className="text-sm">
                             Password
@@ -68,9 +87,13 @@ export default function Page() {
 
                     <button
                         type="submit"
-                        className="p-2 w-full rounded-lg bg-[#222222] h-12"
+                        className="h-12 bg-[#222222] w-full rounded-lg flex items-center justify-center"
                     >
-                        Sign In
+                        {loading ? (
+                            <LoaderCircle size={18} className="animate-spin" />
+                        ) : (
+                            <span>Sign Up</span>
+                        )}
                     </button>
                 </form>
 

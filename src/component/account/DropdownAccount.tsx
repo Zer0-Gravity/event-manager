@@ -1,6 +1,6 @@
 "use client";
 
-import { useSession } from "@/src/lib/auth-client";
+import { signOut, useSession } from "@/src/lib/auth-client";
 import {
     DropdownMenu,
     DropdownMenuContent,
@@ -10,10 +10,20 @@ import {
 } from "@radix-ui/react-dropdown-menu";
 import { LogIn, LogOut, UserPlus2, UserRound } from "lucide-react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 
 export default function DropdownAccount() {
     const { data: session } = useSession();
+    const router = useRouter();
 
+    const handleLogOut = async () => {
+        try {
+            await signOut();
+            router.push("/"); //Change the page to the home page after the logout done
+        } catch (error) {
+            console.log(error);
+        }
+    };
     return (
         <DropdownMenu>
             <DropdownMenuTrigger asChild className="outline-none">
@@ -57,15 +67,15 @@ export default function DropdownAccount() {
                     ) : (
                         <>
                             <DropdownMenuItem className="outline-none">
-                                <Link
-                                    href={"log-out"}
-                                    className="flex gap-5 p-2 bg-red-400 hover:bg-red-500 rounded-lg transition-colors"
+                                <button
+                                    onClick={handleLogOut}
+                                    className="flex gap-5 p-2 bg-red-400 hover:bg-red-500 rounded-lg transition-colors w-full"
                                 >
                                     <LogOut size={18} color="white" />
                                     <span className="font-semibold text-sm text-white">
                                         Log Out
                                     </span>
-                                </Link>
+                                </button>
                             </DropdownMenuItem>
                         </>
                     )}

@@ -1,24 +1,46 @@
 "use client";
 import ErrorMassage from "@/src/component/utils/ErrorMessage";
+import { signUp } from "@/src/lib/auth-client";
 import {
     PasswordToggleField,
     PasswordToggleFieldIcon,
     PasswordToggleFieldInput,
     PasswordToggleFieldToggle,
 } from "@radix-ui/react-password-toggle-field";
-import { EyeIcon, EyeOff } from "lucide-react";
+import { EyeIcon, EyeOff, LoaderCircle } from "lucide-react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { useState } from "react";
 import { useForm } from "react-hook-form";
 
 export default function Page() {
+    const [loading, setLoading] = useState<boolean>(false);
+
+    const router = useRouter();
+
     const {
         register,
         handleSubmit,
         formState: { errors },
     } = useForm();
 
-    const handleRegister = async (e: any) => {
-        e.preventDefault();
+    const handleRegister = async (data: any) => {
+        try {
+            setLoading(true);
+            await signUp.email(
+                { ...data },
+                {
+                    onError: (ctx) => alert(ctx.error.message),
+                    onSuccess: () => {
+                        router.push("/auth/sign-in");
+                    },
+                },
+            );
+        } catch (error) {
+            console.log(error);
+        } finally {
+            setLoading(false);
+        }
     };
 
     return (
@@ -33,6 +55,7 @@ export default function Page() {
                     className="space-y-5"
                     onSubmit={handleSubmit(handleRegister)}
                 >
+                    {/* Name field */}
                     <div className="flex flex-col gap-3">
                         <label htmlFor="name">Name</label>
                         <input
@@ -40,8 +63,11 @@ export default function Page() {
                             className={` custom-input-field ${errors.name && "input-error"}`}
                             placeholder="Name"
                         />
+                        {/* Error Message */}
                         {errors.name && <ErrorMassage />}
                     </div>
+
+                    {/* Email field */}
                     <div className="flex flex-col gap-3">
                         <label htmlFor="name">Email</label>
                         <input
@@ -51,6 +77,8 @@ export default function Page() {
                         />
                         {errors.email && <ErrorMassage />}
                     </div>
+
+                    {/* Password field */}
                     <div className="flex flex-col gap-3">
                         <label htmlFor="name">Password</label>
                         <PasswordToggleField>
@@ -75,9 +103,13 @@ export default function Page() {
 
                     <button
                         type="submit"
-                        className="h-12 bg-[#222222] w-full rounded-lg"
+                        className="h-12 bg-[#222222] w-full rounded-lg flex items-center justify-center"
                     >
-                        Sign Up
+                        {loading ? (
+                            <LoaderCircle size={18} className="animate-spin" />
+                        ) : (
+                            <span>Sign Up</span>
+                        )}
                     </button>
                 </form>
 
