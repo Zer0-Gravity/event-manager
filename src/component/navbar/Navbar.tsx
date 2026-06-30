@@ -9,7 +9,7 @@ export default function Navbar() {
             <Link href={"/"}>Event Planner</Link>
 
             <nav className="flex items-center gap-4">
-                <NavLink href="/dashboard">Dashboard</NavLink>
+                <NavLink href="dashboard">Dashboard</NavLink>
                 <DropdownAccount />
             </nav>
         </div>
