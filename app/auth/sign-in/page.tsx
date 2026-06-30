@@ -1,5 +1,6 @@
 "use client";
 
+import ErrorMassage from "@/src/component/utils/ErrorMessage";
 import {
     PasswordToggleField,
     PasswordToggleFieldIcon,
@@ -16,6 +17,8 @@ export default function Page() {
         handleSubmit,
         formState: { errors },
     } = useForm();
+
+    const handleLogin = async () => {};
     return (
         <main className="flex items-center justify-center w-full">
             <div className="w-full h-full sm:w-120 flex flex-col p-5 space-y-10">
@@ -23,16 +26,20 @@ export default function Page() {
                     <h1 className="text-3xl font-bold">Sign In</h1>
                     <p className="text-sm">Welcome back</p>
                 </header>
-                <form className=" space-y-5">
+                <form
+                    className=" space-y-5"
+                    onSubmit={handleSubmit(handleLogin)}
+                >
                     <div className="flex flex-col gap-3">
                         <label htmlFor="email" className="text-sm">
                             Email
                         </label>
                         <input
                             {...register("email", { required: true })}
-                            className="custom-input-field"
+                            className={`custom-input-field ${errors.email && "input-error"}`}
                             placeholder="Email"
                         />
+                        {errors.email && <ErrorMassage />}
                     </div>
 
                     <div className="flex flex-col gap-3">
@@ -45,7 +52,7 @@ export default function Page() {
                                     {...register("password", {
                                         required: true,
                                     })}
-                                    className="custom-input-field w-full pr-10!"
+                                    className={`custom-input-field w-full pr-10! ${errors.password && "input-error"}`}
                                     placeholder="Password"
                                 />
                                 <PasswordToggleFieldToggle className="absolute bottom-1/2 translate-y-1/2 right-4">
@@ -56,6 +63,7 @@ export default function Page() {
                                 </PasswordToggleFieldToggle>
                             </div>
                         </PasswordToggleField>
+                        {errors.password && <ErrorMassage />}
                     </div>
 
                     <button

@@ -1,11 +1,12 @@
 "use client";
+import ErrorMassage from "@/src/component/utils/ErrorMessage";
 import {
     PasswordToggleField,
     PasswordToggleFieldIcon,
     PasswordToggleFieldInput,
     PasswordToggleFieldToggle,
 } from "@radix-ui/react-password-toggle-field";
-import { AlertCircle, EyeIcon, EyeOff } from "lucide-react";
+import { EyeIcon, EyeOff } from "lucide-react";
 import Link from "next/link";
 import { useForm } from "react-hook-form";
 
@@ -91,14 +92,5 @@ export default function Page() {
                 </h1>
             </div>
         </main>
-    );
-}
-
-function ErrorMassage() {
-    return (
-        <p className="text-red-400 text-xs flex gap-2">
-            <AlertCircle size={14} />
-            <span>This is field required</span>
-        </p>
     );
 }
