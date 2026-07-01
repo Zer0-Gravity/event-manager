@@ -12,6 +12,12 @@ datasource db {
   provider = "postgresql"
 }
 
+enum RsvpStatus {
+  going
+  maybe
+  not_going
+}
+
 model User {
   id            String    @id @default(uuid())
   name          String
@@ -26,6 +32,45 @@ model User {
 
   @@unique([email])
   @@map("user")
+}
+
+model Event {
+  id          String       @id @default(uuid())
+  ownerId     String
+  title       String
+  description String?
+  location    String
+  evenDate    DateTime     @default(now())
+  createdAt   DateTime     @default(now())
+  updatedAt   DateTime     @default(now())
+  eventInvite EventInvite?
+
+  @@index([ownerId, createdAt(sort: Desc)])
+}
+
+model EventInvite {
+  id      String @id @default(uuid())
+  eventId String @unique
+  token   String @unique
+
+  createdAt DateTime @default(now())
+  event     Event    @relation(fields: [eventId], references: [id])
+}
+
+model EventRsvp {
+  id              String     @id @default(uuid())
+  eventId         String?
+  inviteId        String
+  name            String
+  email           String
+  emailNormalized String
+  status          RsvpStatus
+  respondedAt     DateTime   @default(now())
+  createdAt       DateTime   @default(now())
+  updatedAt       DateTime   @default(now())
+
+  @@unique([eventId, emailNormalized])
+  @@index([eventId, respondedAt(sort: Desc)])
 }
 
 model Session {
