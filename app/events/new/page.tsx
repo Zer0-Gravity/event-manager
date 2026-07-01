@@ -6,13 +6,39 @@ import {
     PopoverContent,
     PopoverTrigger,
 } from "@/components/ui/popover";
+import { useSession } from "@/src/lib/auth-client";
 import { format } from "date-fns";
 import { Calendar1Icon } from "lucide-react";
 import Link from "next/link";
 import { Controller, useForm } from "react-hook-form";
+import { CreateNewEvent } from "./action";
+import { useState } from "react";
 
 export default function CreateEventPage() {
-    const { control, register, handleSubmit } = useForm();
+    const { control, register, handleSubmit, reset } = useForm();
+    const [loading, setLoading] = useState<boolean>(false);
+
+    //get user session
+    const { data: session } = useSession();
+
+    //Add new event
+    const handleNewEvent = async (data: any) => {
+        if (!session) {
+            alert("Please login first");
+        }
+
+        setLoading(true);
+
+        //Send the data and user to the action function
+        const result = await CreateNewEvent(data, session?.user.id as string);
+
+        if (result.success) {
+            setLoading(false);
+            reset();
+        } else {
+            alert(result.error);
+        }
+    };
 
     return (
         <main className="w-full px-2 sm:max-w-225 mx-auto">
@@ -22,7 +48,7 @@ export default function CreateEventPage() {
                     Create your new event and start inviting people!!
                 </p>
             </header>
-            <form className="space-y-5">
+            <form onSubmit={handleSubmit(handleNewEvent)} className="space-y-5">
                 <div className="flex flex-col gap-3">
                     <label htmlFor="title">Title</label>
                     <input
@@ -89,10 +115,16 @@ export default function CreateEventPage() {
                 </div>
 
                 <div className="flex gap-3 justify-end">
-                    <button className="p-1 bg-white text-black rounded-lg w-20 font-semibold text-sm">
+                    <button
+                        type="submit"
+                        className="p-1 bg-white text-black rounded-lg w-20 font-semibold text-sm"
+                    >
                         Create
                     </button>
-                    <button className="p-1 bg-gray-500 text-white rounded-lg w-20 font-semibold text-sm">
+                    <button
+                        type="button"
+                        className="p-1 bg-gray-500 text-white rounded-lg w-20 font-semibold text-sm"
+                    >
                         <Link href={"/dashboard"}>Cancel</Link>
                     </button>
                 </div>
