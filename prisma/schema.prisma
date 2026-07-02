@@ -44,6 +44,7 @@ model Event {
   createdAt   DateTime     @default(now())
   updatedAt   DateTime     @default(now())
   eventInvite EventInvite?
+  eventRsvps  EventRsvp[]
 
   @@index([ownerId, createdAt(sort: Desc)])
 }
@@ -54,7 +55,7 @@ model EventInvite {
   token   String @unique
 
   createdAt DateTime @default(now())
-  event     Event    @relation(fields: [eventId], references: [id])
+  event     Event    @relation(fields: [eventId], references: [id], onDelete: Cascade)
 }
 
 model EventRsvp {
@@ -68,6 +69,8 @@ model EventRsvp {
   respondedAt     DateTime   @default(now())
   createdAt       DateTime   @default(now())
   updatedAt       DateTime   @default(now())
+
+  event Event? @relation(fields: [eventId], references: [id], onDelete: Cascade)
 
   @@unique([eventId, emailNormalized])
   @@index([eventId, respondedAt(sort: Desc)])
