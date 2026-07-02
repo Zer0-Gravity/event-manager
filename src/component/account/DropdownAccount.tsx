@@ -11,6 +11,7 @@ import {
 import { LogIn, LogOut, UserPlus2, UserRound } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 
 export default function DropdownAccount() {
     const { data: session } = useSession();
@@ -27,9 +28,17 @@ export default function DropdownAccount() {
     return (
         <DropdownMenu>
             <DropdownMenuTrigger asChild className="outline-none">
-                <button className="h-8 w-8 rounded-full bg-white flex items-center justify-center">
-                    <UserRound size={18} color="black" />
-                </button>
+                <Avatar>
+                    {session ? (
+                        <AvatarFallback className="font-bold">
+                            {session?.user.name.trim()?.charAt(0).toUpperCase()}
+                        </AvatarFallback>
+                    ) : (
+                        <AvatarFallback>
+                            <UserRound size={18} color="black" />
+                        </AvatarFallback>
+                    )}
+                </Avatar>
             </DropdownMenuTrigger>
 
             <DropdownMenuContent
@@ -37,12 +46,14 @@ export default function DropdownAccount() {
                 sideOffset={10}
                 className="bg-white p-2 w-50 text-black rounded-lg space-y-1"
             >
+                <h1 className="text-sm font-bold">Account</h1>
+                <hr className="border-black" />
                 {!session ? (
                     <>
                         <DropdownMenuItem className="outline-none">
                             <Link
                                 href={"/auth/sign-in"}
-                                className="flex gap-5 p-2 hover:bg-gray-200 rounded-lg transition-colors"
+                                className="flex gap-5 p-2 rounded-lg transition-colors"
                             >
                                 <LogIn size={18} />
                                 <span className="font-semibold text-sm">
@@ -54,7 +65,7 @@ export default function DropdownAccount() {
                         <DropdownMenuItem className="outline-none">
                             <Link
                                 href={"/auth/sign-up"}
-                                className="flex gap-5 p-2 hover:bg-gray-200 rounded-lg transition-colors"
+                                className="flex gap-5 p-2 rounded-lg transition-colors"
                             >
                                 <UserPlus2 size={18} />
                                 <span className="font-semibold text-sm">
