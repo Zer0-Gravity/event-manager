@@ -1,6 +1,7 @@
 "use server";
 
 import { Badge } from "@/components/ui/badge";
+import CopyButton from "@/src/component/utils/CopyButton";
 import { generateInviteLink } from "@/src/component/utils/generateInviteLink";
 import { auth } from "@/src/lib/auth";
 import prisma from "@/src/lib/prisma";
@@ -47,8 +48,12 @@ export default async function DetailEventPage({
 
     const handleInviteLink = await generateInviteLink.bind(null, event.id);
 
+    const inviteUrl = event.eventInvite?.token
+        ? `${process.env.NEXT_PUBLIC_URL ?? ""}/invite/${event.eventInvite.token}`
+        : null;
+
     return (
-        <main className="w-full space-y-5">
+        <main className="w-full p-2 space-y-5">
             <header className="flex justify-between">
                 <h1 className="font-bold text-2xl">{event.title}</h1>
                 <Link
@@ -59,12 +64,12 @@ export default async function DetailEventPage({
                 </Link>
             </header>
             <div className="space-y-2">
-                <div className="flex gap-4 text-sm">
+                <div className="flex flex-col sm:flex-row gap-4 text-sm sm:items-center">
                     <div className="flex gap-2">
                         <Calendar size={18} />
                         <p>{format(event.eventDate, "PPPP")}</p>
                     </div>
-                    <Dot />
+                    <Dot className="hidden sm:block" />
                     <div className="flex gap-2">
                         <MapPin size={18} />
                         <p>{event.location}</p>
@@ -86,14 +91,37 @@ export default async function DetailEventPage({
                 {event.description ? event.description : "No description"}
             </p>
 
-            <div className="bg-gray-800">
-                <p>Invite Link</p>
-                <p>
-                    Share this link to your friends or guests so they can RSVP
-                    without creating an account!!
-                </p>
-                <form action={handleInviteLink}>
-                    <button type="submit">Generate Link</button>
+            <div className="border border-[#222222] p-3 rounded-lg space-y-3">
+                <div>
+                    <h1 className="text-lg font-bold">Invite Link</h1>
+                    <p className="text-sm">
+                        Share this link to your friends or guests so they can
+                        RSVP without creating an account!!
+                    </p>
+                </div>
+
+                <div className="border border-[#222222] bg-[#101010] min-w-0 h-auto rounded-md p-2 text-sm">
+                    {inviteUrl ? (
+                        <p className="truncate">{inviteUrl}</p>
+                    ) : (
+                        <p className="truncate">
+                            No invite link generated, please generated an invite
+                            link below
+                        </p>
+                    )}
+                </div>
+                <form
+                    action={handleInviteLink}
+                    className="flex justify-between"
+                >
+                    <button
+                        type="submit"
+                        className="bg-white text-black p-2 rounded-lg text-sm"
+                    >
+                        Generate Link
+                    </button>
+
+                    {inviteUrl && <CopyButton url={inviteUrl} />}
                 </form>
             </div>
         </main>
