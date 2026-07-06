@@ -8,7 +8,7 @@ export async function generateInviteLink(eventId: string) {
     const session = await auth.api.getSession({ headers: await headers() });
 
     //Check if the event owned by the user
-    const own = prisma.event.findFirst({
+    const own = await prisma.event.findFirst({
         where: { id: eventId, ownerId: session?.user.id },
         select: { id: true },
     });

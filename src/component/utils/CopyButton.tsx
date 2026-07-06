@@ -21,7 +21,7 @@ export default function CopyButton({ url }: { url: string | null }) {
     };
 
     return (
-        <button onClick={onCopy} className="text-sm">
+        <button onClick={onCopy} type="button" className="text-sm">
             {copied ? (
                 <div className="flex gap-2">
                     <Check size={18} />

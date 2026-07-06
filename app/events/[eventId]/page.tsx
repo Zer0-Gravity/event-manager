@@ -48,6 +48,7 @@ export default async function DetailEventPage({
 
     const handleInviteLink = await generateInviteLink.bind(null, event.id);
 
+    //get invite link alongside the web url
     const inviteUrl = event.eventInvite?.token
         ? `${process.env.NEXT_PUBLIC_URL ?? ""}/invite/${event.eventInvite.token}`
         : null;
