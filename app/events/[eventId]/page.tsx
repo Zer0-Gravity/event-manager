@@ -1,6 +1,7 @@
 "use server";
 
 import { Badge } from "@/components/ui/badge";
+import AttendeesList from "@/src/component/event/AttendeesList";
 import CopyButton from "@/src/component/utils/CopyButton";
 import { generateInviteLink } from "@/src/component/utils/generateInviteLink";
 import { auth } from "@/src/lib/auth";
@@ -125,6 +126,8 @@ export default async function DetailEventPage({
                     {inviteUrl && <CopyButton url={inviteUrl} />}
                 </form>
             </div>
+
+            <AttendeesList eventId={eventId} />
         </main>
     );
 }
