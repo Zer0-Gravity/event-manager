@@ -8,23 +8,34 @@ import {
     SelectTrigger,
     SelectValue,
 } from "@/components/ui/select";
-import { DropdownMenu } from "@radix-ui/react-dropdown-menu";
 import { Controller, useForm } from "react-hook-form";
+import { submitRsvpInvite } from "../utils/submitRsvp";
 
-export default function InviteForm() {
-    const {
-        register,
-        handleSubmit,
-        formState: { errors },
-        control,
-    } = useForm();
+export default function InviteForm({
+    token,
+    submitted,
+}: {
+    token: string;
+    submitted: boolean | undefined;
+}) {
+    const { register, handleSubmit, control } = useForm();
 
-    const registerAttendance = (data) => {};
+    const registerAttendance = async (data: any) => {
+        await submitRsvpInvite(token, data);
+    };
+
     return (
         <main>
+            {submitted && (
+                <div className="border mb-5 border-[#222222] p-2 rounded-md text-sm text-gray-400">
+                    <h1>Thank you your respond have been recorded!</h1>
+                </div>
+            )}
+
+            {/* Form Section */}
             <form
-                onSubmit={handleSubmit(registerAttendance)}
                 className="space-y-4 text-sm"
+                onSubmit={handleSubmit(registerAttendance)}
             >
                 <div className="flex flex-col gap-2">
                     <label htmlFor="name">Name</label>
@@ -45,6 +56,7 @@ export default function InviteForm() {
                 <Controller
                     control={control}
                     name="status"
+                    rules={{ required: true }}
                     render={({ field }) => (
                         <div className="flex flex-col gap-2">
                             <label htmlFor="status">Status</label>

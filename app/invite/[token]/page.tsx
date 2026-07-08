@@ -6,11 +6,15 @@ import { notFound } from "next/navigation";
 
 export default async function InvitePage({
     params,
+    searchParams,
 }: {
     params: Promise<{ token: string }>;
+    searchParams: Promise<{ submitted?: boolean }>;
 }) {
     const { token } = await params;
+    const query = await searchParams;
 
+    //get data access on event invite
     const overview = await prisma.eventInvite.findFirst({
         where: { token },
         include: {
@@ -46,7 +50,7 @@ export default async function InvitePage({
                 <div className="bg-[#161616] p-2 rounded-sm text-sm mb-5">
                     <span>Submit your correct information!</span>
                 </div>
-                <InviteForm />
+                <InviteForm token={token} submitted={!!query.submitted} />
             </div>
         </main>
     );
