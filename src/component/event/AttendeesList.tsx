@@ -1,3 +1,4 @@
+import { Badge } from "@/components/ui/badge";
 import {
     Table,
     TableBody,
@@ -40,7 +41,13 @@ export default async function AttendeesList({ eventId }: { eventId: string }) {
                         <TableRow key={i}>
                             <TableCell>{data.name}</TableCell>
                             <TableCell>{data.email}</TableCell>
-                            <TableCell>{data.status}</TableCell>
+                            <TableCell>
+                                <Badge variant="secondary">
+                                    {data.status === "not_going"
+                                        ? "not going"
+                                        : data.status}
+                                </Badge>
+                            </TableCell>
                             <TableCell>
                                 {format(data.respondedAt, "PPpp")}
                             </TableCell>
