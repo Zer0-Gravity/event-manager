@@ -99,8 +99,6 @@ export default function Page() {
 
                 <p className="text-[#636363] text-xs text-center">OR</p>
 
-                <button className="bg-[#222222] rounded-lg h-12">Google</button>
-
                 <h1 className="text-sm text-center">
                     Don&apos;t have account?
                     <Link

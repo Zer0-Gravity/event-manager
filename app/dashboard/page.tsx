@@ -45,9 +45,11 @@ export default async function DashboardPage() {
             </header>
 
             {/* Event List Here */}
-            <div className="grid md:grid-cols-2 gap-2">
+            <div
+                className={`grid gap-2 ${events.length !== 0 && "md:grid-cols-2"}`}
+            >
                 {events.length === 0 ? (
-                    <div className="flex gap-3 items-center justify-center border-[#222222] border rounded-lg p-4">
+                    <div className="flex gap-3 items-center justify-center border-[#222222] border rounded-lg p-4 w-full">
                         <Frown size={30} />
                         <div>
                             <h1 className="font-semibold">No event yet</h1>

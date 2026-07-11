@@ -16,7 +16,7 @@ export default async function Home() {
     });
 
     return (
-        <div className="font-sans dark:bg-black w-full space-y-5">
+        <div className="font-sans dark:bg-black w-full space-y-5 p-2">
             <header className="space-y-2">
                 <h1 className="text-3xl font-bold">
                     Plan event and track your attendace fast
@@ -31,7 +31,7 @@ export default async function Home() {
                     href={"/auth/sign-up"}
                     className="p-2 bg-white rounded-lg text-black font-semibold"
                 >
-                    Create new account
+                    New account
                 </Link>
                 {!session && (
                     <Link
@@ -48,21 +48,21 @@ export default async function Home() {
                     Open Dashboard
                 </Link>
             </div>
-            <div className="flex justify-between gap-4">
-                <div className="p-3 border border-[#222222] w-sm h-30 rounded-lg">
+            <div className="flex flex-col md:flex-row justify-between gap-4">
+                <div className="p-3 border border-[#222222] w-full md:w-sm h-30 rounded-lg">
                     <h1 className="font-semibold">Create event</h1>
                     <p className="text-sm text-gray-500">
                         Plan and create your event
                     </p>
                 </div>
-                <div className="p-3 border border-[#222222] w-sm h-30 rounded-lg">
+                <div className="p-3 border border-[#222222] w-full md:w-sm h-30 rounded-lg">
                     <h1 className="font-semibold">Share invite link</h1>
                     <p className="text-sm text-gray-500">
                         Share your link and invite people you know to attend
                         your event
                     </p>
                 </div>
-                <div className="p-3 border border-[#222222] w-sm h-30 rounded-lg">
+                <div className="p-3 border border-[#222222] w-full md:w-sm h-30 rounded-lg">
                     <h1 className="font-semibold">Track attendace</h1>
                     <p className="text-sm text-gray-500">
                         Track your current attendace and see what their respond
