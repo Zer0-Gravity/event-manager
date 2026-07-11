@@ -92,7 +92,7 @@ export default function Page() {
                         {loading ? (
                             <LoaderCircle size={18} className="animate-spin" />
                         ) : (
-                            <span>Sign Up</span>
+                            <span>Sign In</span>
                         )}
                     </button>
                 </form>
